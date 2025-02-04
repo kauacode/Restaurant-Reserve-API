@@ -1,0 +1,337 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Restaurant Management",
+    "description": "Uma API para gerenciamento de um restaurante, permitindo a criação de usuários com diferentes permissões (admin ou usuário), autenticação via JWT, e funcionalidades para gerenciar mesas e reservas.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333",
+      "description": "Servidor local"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/usuarios/registrar": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Registrar um novo usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "role"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso!"
+          },
+          "400": {
+            "description": "Erro de validação!"
+          }
+        }
+      }
+    },
+    "/usuarios/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Fazer login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso!"
+          },
+          "401": {
+            "description": "Credenciais inválidas!"
+          }
+        }
+      }
+    },
+    "/mesas": {
+      "get": {
+        "tags": [
+          "Desks"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Listar todas as mesas",
+        "responses": {
+          "200": {
+            "description": "Lista de mesas retornada com sucesso!"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Desks"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Criar uma nova mesa",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "capacity": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "name",
+                  "capacity"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Mesa criada com sucesso!"
+          },
+          "400": {
+            "description": "Erro de validação!"
+          }
+        }
+      }
+    },
+    "/mesas/{id}": {
+      "patch": {
+        "tags": [
+          "Desks"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Atualizar uma mesa existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "capacity": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mesa atualizada com sucesso!"
+          },
+          "400": {
+            "description": "Erro de validação!"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Desks"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Deletar uma mesa",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mesa deletada com sucesso!"
+          },
+          "404": {
+            "description": "Mesa não encontrada!"
+          }
+        }
+      }
+    },
+    "/reservas": {
+      "get": {
+        "tags": [
+          "Reservations"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Listar todas as reservas",
+        "responses": {
+          "200": {
+            "description": "Lista de reservas retornada com sucesso!"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reservations"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Criar uma nova reserva",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "deskId": {
+                    "type": "integer"
+                  },
+                  "reservationDate": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                },
+                "required": [
+                  "deskId",
+                  "reservationDate"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reserva criada com sucesso!"
+          },
+          "400": {
+            "description": "Erro de validação!"
+          }
+        }
+      }
+    },
+    "/reservas/{id}/cancelar": {
+      "patch": {
+        "tags": [
+          "Reservations"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Cancelar uma reserva",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reserva cancelada com sucesso!"
+          },
+          "404": {
+            "description": "Reserva não encontrada!"
+          }
+        }
+      }
+    }
+  }
+}
