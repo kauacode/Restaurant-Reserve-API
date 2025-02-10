@@ -50,7 +50,7 @@ You also need **TypeScript** installed globally. Run the following command in yo
 npm install -g typescript
 
 3️⃣ Clone the repository  
-git clone https://github.com/YOUR-USERNAME/restaurant-reserve.git
+git clone https://github.com/kauacode/Restaurant-Reserve-API.git
 cd restaurant-reserve
 
 4️⃣ Install dependencies
